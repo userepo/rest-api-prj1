@@ -6,7 +6,7 @@ pub struct Question {
     pub description: String
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone, sqlx::FromRow)]
 pub struct QuestionDetail {
     pub question_uuid: String,
     pub title: String,
