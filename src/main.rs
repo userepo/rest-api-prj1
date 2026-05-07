@@ -1,7 +1,7 @@
 
 use std::{env, time::Duration};
 
-use log::{debug, error, info, trace, warn};
+//use log::{debug, error, info, trace, warn};
 use pretty_env_logger;
 
 use axum::{

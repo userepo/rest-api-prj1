@@ -1,5 +1,6 @@
 mod answers_tests {
-    use sqlx::{PgPool};
+    use sqlx::PgPool;
+
     use crate::{
         models::{Answer, DBError, Question},
         persistance::{
@@ -123,12 +124,6 @@ mod answers_tests {
 
         Ok(())
     }
-
-    // ----------------------------------
-
-
-
-    // ----------------------------------
 
     #[sqlx::test]
     async fn delete_answer_should_fail_with_malformed_uuid(pool: PgPool) -> Result<(), String> {
