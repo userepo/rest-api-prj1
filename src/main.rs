@@ -1,42 +1,39 @@
-use std::env;
-use std::time::Duration;
+
+use std::{env, time::Duration};
+
 use log::{debug, error, info, trace, warn};
 use pretty_env_logger;
-use dotenvy;
-use sqlx::postgres::PgPoolOptions;
 
 use axum::{
     routing::{delete, get, post},
     Router,
 };
 
+use dotenvy::dotenv;
+
+use sqlx::postgres::PgPoolOptions;
+
 mod handlers;
 mod models;
+mod persistance;
 
 use handlers::*;
-use models::*;
+//use models::*;
 
 #[tokio::main]
 async fn main() {
-    dotenvy::dotenv().expect(".env file not found");
+    dotenv().expect(".env file not found");
 
     pretty_env_logger::init();
 
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
 
-    // Examples: https://github.com/launchbadge/sqlx
-    let pool = PgPoolOptions::new()
+    let _pool = PgPoolOptions::new()
         .max_connections(5)
-        .acquire_timeout(Duration::from_secs(30))
-        .connect(database_url.as_str()).await.unwrap(); //panic on error
-
-    // This is just some test code to make sure we can connect to the database.
-    let recs = sqlx::query_as::<_, QuestionDetail>("SELECT * FROM questions")
-        .fetch_all(&pool)
-        .await.unwrap(); // panic on error
-
-    info!("------ Question Records ------");
-    info!("{:?}", recs);
+        .acquire_timeout(Duration::from_secs(15))
+        .connect(database_url.as_str())
+	.await
+        .expect("Failed to create Postgres connection pool!");
     
     let app = Router::new()
         .route("/question", post(create_question))
