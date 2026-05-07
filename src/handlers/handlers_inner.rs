@@ -86,7 +86,6 @@ pub async fn read_answers(
     match answers {
         Ok(answers) => Ok(answers),
         Err(e) => {
-            // TODO: log err using error! macro
             error!("{}", e);
             Err(HandlerError::default_internal_error())
         }
