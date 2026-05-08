@@ -1,5 +1,5 @@
-use thiserror::Error;
 use serde::{Deserialize, Serialize};
+use thiserror::Error;
 
 #[derive(Serialize, Deserialize)]
 pub struct Question {
@@ -15,10 +15,10 @@ pub struct QuestionDetail {
     pub created_at: String
 }
 
-#[derive(Serialize, Deserialize)]
+/*#[derive(Serialize, Deserialize)]
 pub struct QuestionId {
     pub question_uuid: String
-}
+}*/
 
 #[derive(Serialize, Deserialize)]
 pub struct Answer {
@@ -34,10 +34,10 @@ pub struct AnswerDetail {
     pub created_at: String
 }
 
-#[derive(Serialize, Deserialize)]
+/*#[derive(Serialize, Deserialize)]
 pub struct AnswerId {
     pub answer_uuid: String
-}
+}*/
 
 
 #[derive(Error, Debug)]

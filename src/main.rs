@@ -1,4 +1,3 @@
-
 use std::{env, time::Duration};
 
 //use log::{debug, error, info, trace, warn};
@@ -47,17 +46,18 @@ async fn main() {
         .expect("Failed to create Postgres connection pool!");
 
     let questions_dao = QuestionsDaoImpl::new(pool.clone());
-    let answers_dao = AnswersDaoImpl::new(pool.clone());
+    let answers_dao = AnswersDaoImpl::new(pool);
 
-    let app_state = AppState { questions_dao: Arc::new(questions_dao), answers_dao: Arc::new(answers_dao) };
+    let app_state = AppState {
+    	questions_dao: Arc::new(questions_dao), 
+    	answers_dao: Arc::new(answers_dao) 
+    };
 
     let app = Router::new()
-        .route("/question", post(create_question))
-        .route("/questions", get(read_questions))
-        .route("/question", delete(delete_question))
-        .route("/answer", post(create_answer))
-        .route("/answers", get(read_answers))
-        .route("/answer", delete(delete_answer))
+        .route("/questions", post(create_question).get(read_questions))
+        .route("/questions/{id}", delete(delete_question))
+        .route("/answers", post(create_answer))
+        .route("/answers/{id}", get(read_answers).delete(delete_answer))
         .with_state(app_state);
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:8000")
